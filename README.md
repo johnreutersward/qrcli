@@ -1,4 +1,5 @@
-# ![qrcli](http://i.imgur.com/dhnYicm.png) qrcli
+
+# <img src="http://i.imgur.com/dhnYicm.png" alt="qrcli" align="left" /> qrcli
 
 qrcli is a cli tool for creating QR codes.
 
@@ -58,7 +59,7 @@ For more information on diffrent types of contents see:
 https://github.com/zxing/zxing/wiki/Barcode-Contents
 
 ## Attribution
-This package imports and uses [code.google.com/p/rsc/qr][rsc-qr], a QR generation package by Russ Cox.
+This package imports and uses [qr](http://code.google.com/p/rsc/qr), a QR generation package by Russ Cox.
 
 ## License
 
