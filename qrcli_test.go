@@ -109,6 +109,13 @@ var geotests = []struct {
 			"1000",
 		}, "geo:69.7241573,30.0583198,1000",
 	},
+	{
+		geo{
+			"",
+			"",
+			"",
+		}, "geo:,,",
+	},
 }
 
 func TestGeo(t *testing.T) {
