@@ -1,5 +1,6 @@
-
 # <img src="http://i.imgur.com/dhnYicm.png" alt="qrcli" align="left" /> qrcli
+
+[![travis-ci status](https://api.travis-ci.org/rojters/qrcli.png)](https://travis-ci.org/rojters/qrcli)
 
 qrcli is a cli tool for creating QR codes.
 
