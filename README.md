@@ -39,20 +39,28 @@ usage: qrcli [flags] [text]
 
 More examples:
 
+- wifi authentication (Android, may require plugins on device)
 ```bash
-# wifi authentication (Android, may require plugins)
 $ qrcli -ssid hotspot -pw secret -out wifi.png
+```
 
-# geographic information
+- geographic information
+```bash
 $ qrcli -out geo.png -lat 69.7241573 -long 30.0583198 -elev 1000
+```
 
-# email
+- email
+```bash
 $ qrcli "mailto:hello@example.com" > email.png
+```
 
-# specify input file, use highest error correction level
+- specify input file, use highest error correction level
+```bash
 $ qrcli -file mecard.txt -out contact.png -level H 
+```
 
-# Google play uri (opens app in play store on Android)
+- Google play uri (opens app in play store on Android)
+```bash
 $ qrcli -playstore com.github.mobile -out app.png
 ```
 
