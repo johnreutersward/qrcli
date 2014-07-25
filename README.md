@@ -8,19 +8,19 @@ qrcli is a cli tool for creating QR codes.
 
 Install from source: 
 
-```bash
+```
 $ go get github.com/rojters/qrcli
 ```
 
 Writes to stdout by default:
 
-```bash
+```
 $ qrcli "Hello, world" > qr.png
 ```
 
 Options:
 
-```bash
+```
 $ qrcli
 usage: qrcli [flags] [text]
        qrcli -out qr.png "http://golang.org/"
@@ -40,27 +40,27 @@ usage: qrcli [flags] [text]
 More examples:
 
 - wifi authentication (Android, may require plugins on device)
-```bash
+```
 $ qrcli -ssid hotspot -pw secret -out wifi.png
 ```
 
 - geographic information
-```bash
+```
 $ qrcli -out geo.png -lat 69.7241573 -long 30.0583198 -elev 1000
 ```
 
 - email
-```bash
+```
 $ qrcli "mailto:hello@example.com" > email.png
 ```
 
 - specify input file, use highest error correction level
-```bash
+```
 $ qrcli -file mecard.txt -out contact.png -level H 
 ```
 
 - Google play uri (opens app in play store on Android)
-```bash
+```
 $ qrcli -playstore com.github.mobile -out app.png
 ```
 
