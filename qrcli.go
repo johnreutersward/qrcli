@@ -1,25 +1,35 @@
 package main
 
 import (
-	"bufio"
 	"flag"
 	"fmt"
+	"image/png"
 	"io/ioutil"
 	"log"
 	"os"
 
-	"code.google.com/p/rsc/qr"
+	"github.com/boombuler/barcode"
+	"github.com/boombuler/barcode/qr"
 )
 
-func usage() {
+const (
+	version = "0.1"
+)
+
+func printUsage() {
 	fmt.Fprintf(os.Stderr,
 		"usage: qrcli [flags] [text]\n"+
 			"       qrcli -out qr.png \"http://golang.org/\"\n")
 	flag.PrintDefaults()
-	os.Exit(2)
+	os.Exit(0)
 }
 
-func handleLevelFlag(lvl string) qr.Level {
+func printVersion() {
+	fmt.Fprintf(os.Stdout, "qrcli %s\n", version)
+	os.Exit(0)
+}
+
+func handleLevelFlag(lvl string) qr.ErrorCorrectionLevel {
 	switch lvl {
 	case "M":
 		return qr.M
@@ -35,30 +45,36 @@ func main() {
 
 	var (
 		// global
-		inputFile  = flag.String("file", "", "input file")
-		outputFile = flag.String("out", "", "output file; stdout if empty")
-		level      = flag.String("level", "L", "error correction level (L|M|Q|H)")
+		showHelp    = flag.Bool("help", false, "Show usage help")
+		showVersion = flag.Bool("version", false, "Show version")
+		inputFile   = flag.String("file", "", "Input file")
+		outputFile  = flag.String("out", "", "Output file")
+		level       = flag.String("level", "L", "Error correction level (L|M|Q|H)")
+		size        = flag.Int("size", 250, "Output image size")
 
 		// wifi
-		wifiType     = flag.String("type", "WPA", "Wifi: network type (WPA|WEP)")
-		wifiSSID     = flag.String("ssid", "", "Wifi: ssid")
-		wifiPassword = flag.String("pw", "", "Wifi: password")
-		wifiHidden   = flag.Bool("hidden", false, "Wifi: hidden (true|false)")
+		wifiAuth     = flag.String("wifi-auth", "WPA", "Wifi authentication (WPA|WEP|nopass)")
+		wifiSSID     = flag.String("wifi-ssid", "", "Wifi SSID")
+		wifiPassword = flag.String("wifi-pw", "", "Wifi password")
+		wifiHidden   = flag.Bool("wifi-hidden", false, "Wifi hidden (true|false)")
 
 		// geo
-		geoLat  = flag.String("lat", "", "GEO: deg N latitude")
-		geoLong = flag.String("long", "", "GEO: deg W longitude")
-		geoElev = flag.String("elev", "", "GEO: elevation")
+		geoLat  = flag.String("geo-lat", "", "Geo deg N latitude")
+		geoLong = flag.String("geo-long", "", "Geo deg W longitude")
+		geoElev = flag.String("geo-elev", "", "Geo elevation")
 
 		// Google play
-		play = flag.String("playstore", "", "Google play store uri, eg. org.example.app")
+		play = flag.String("googleplay", "", "Google Play uri, e.g. \"org.example.app\"")
 	)
 
 	flag.Parse()
 
-	if flag.NArg() == 0 && *inputFile == "" && *wifiSSID == "" && *geoLat == "" && *play == "" {
-		// no input
-		usage()
+	if *showVersion {
+		printVersion()
+	}
+
+	if (flag.NArg() == 0 && *inputFile == "" && *wifiSSID == "" && *geoLat == "" && *play == "") || *showHelp {
+		printUsage()
 	}
 
 	var text string
@@ -66,7 +82,7 @@ func main() {
 
 	switch {
 	case *wifiSSID != "":
-		text = handleWifi(*wifiType, *wifiSSID, *wifiPassword, *wifiHidden)
+		text = handleWifi(*wifiAuth, *wifiSSID, *wifiPassword, *wifiHidden)
 	case *geoLat != "":
 		text = handleGeo(*geoLat, *geoLong, *geoElev)
 	case *play != "":
@@ -77,14 +93,30 @@ func main() {
 		text = args[0]
 	}
 
-	code, err := qr.Encode(text, handleLevelFlag(*level))
-
+	qrcode, err := qr.Encode(text, handleLevelFlag(*level), qr.Auto)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	write(code.PNG(), *outputFile)
+	qrcode, err = barcode.Scale(qrcode, *size, *size)
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	var f *os.File
+	if *outputFile != "" {
+		f, err = os.Create(*outputFile)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		f = os.Stdout
+	}
+	defer f.Close()
+
+	if err := png.Encode(f, qrcode); err != nil {
+		log.Fatal(err)
+	}
 }
 
 func handleInput(inputFile string) string {
@@ -105,19 +137,4 @@ func handleGeo(geoLat, geoLong, geoElev string) string {
 
 func handleWifi(wifiType string, wifiSSID string, wifiPassword string, wifiHidden bool) string {
 	return fmt.Sprintf("WIFI:T:%s;S:%s;P:%s;H:%t;", wifiType, wifiSSID, wifiPassword, wifiHidden)
-}
-
-func write(img []byte, outputFile string) {
-	if outputFile != "" {
-		f, err := os.Create(outputFile)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer f.Close()
-		f.Write(img)
-	} else {
-		f := bufio.NewWriter(os.Stdout)
-		defer f.Flush()
-		f.Write(img)
-	}
 }
