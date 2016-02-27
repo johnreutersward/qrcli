@@ -3,12 +3,12 @@ package main
 import (
 	"testing"
 
-	"code.google.com/p/rsc/qr"
+	"github.com/boombuler/barcode/qr"
 )
 
 var leveltests = []struct {
 	in       string
-	expected qr.Level
+	expected qr.ErrorCorrectionLevel
 }{
 	{"L", qr.L},
 	{"Q", qr.Q},
