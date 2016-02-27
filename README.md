@@ -4,7 +4,7 @@
 
 qrcli is a cli tool for creating QR codes.
 
-## Usage
+## Install
 
 Install from source: 
 
@@ -12,63 +12,80 @@ Install from source:
 $ go get github.com/rojters/qrcli
 ```
 
+## Usage
+
 Writes to stdout by default:
 
 ```
 $ qrcli "Hello, world" > qr.png
 ```
 
-Options:
+## Options
 
 ```
-$ qrcli
-usage: qrcli [flags] [text]
+$ usage: qrcli [flags] [text]
        qrcli -out qr.png "http://golang.org/"
-  -elev="": GEO: elevation
-  -file="": input file
-  -hidden=false: Wifi: hidden (true|false)
-  -lat="": GEO: deg N latitude
-  -level="L": error correction level (L|M|Q|H)
-  -long="": GEO: deg W longitude
-  -out="": output file; stdout if empty
-  -playstore="": Google play store uri, eg. org.example.app
-  -pw="": Wifi: password
-  -ssid="": Wifi: ssid
-  -type="WPA": Wifi: network type (WPA|WEP)
+  -file string
+      Input file
+  -geo-elev string
+      Geo elevation
+  -geo-lat string
+      Geo deg N latitude
+  -geo-long string
+      Geo deg W longitude
+  -googleplay string
+      Google Play uri, e.g. "org.example.app"
+  -help
+      Show usage help
+  -level string
+      Error correction level (L|M|Q|H) (default "L")
+  -out string
+      Output file
+  -size int
+      Output image size (default 250)
+  -version
+      Show version
+  -wifi-auth string
+      Wifi authentication (WPA|WEP|nopass) (default "WPA")
+  -wifi-hidden
+      Wifi hidden (true|false)
+  -wifi-pw string
+      Wifi password
+  -wifi-ssid string
+      Wifi SSID
 ```
 
-More examples:
+## Examples
 
-- wifi authentication (Android, may require plugins on device)
-```
-$ qrcli -ssid hotspot -pw secret -out wifi.png
-```
+Specify input and output file.
 
-- geographic information
 ```
-$ qrcli -out geo.png -lat 69.7241573 -long 30.0583198 -elev 1000
+$ qrcli -file mecard.txt -out contact.png
 ```
 
-- email
+Wifi authentication. Android devices can use this to automatically connect to a Wifi network (may require plugins). 
+
+```
+$ qrcli -wifi-ssid hotspot -wifi-pw secret -out wifi.png
+```
+
+Geographic information.
+
+```
+$ qrcli -geo-lat 12.357222 -geo-long -1.535278 -geo-elev 11 -out geo.png
+```
+
+Email.
+
 ```
 $ qrcli "mailto:hello@example.com" > email.png
 ```
 
-- specify input file, use highest error correction level
-```
-$ qrcli -file mecard.txt -out contact.png -level H 
-```
+Google play URI. Opens app in Google Play on Android.
 
-- Google play uri (opens app in play store on Android)
 ```
-$ qrcli -playstore com.github.mobile -out app.png
+$ qrcli -googleplay com.google.android.youtube -out app.png
 ```
-
-For more information on diffrent types of contents see:
-https://github.com/zxing/zxing/wiki/Barcode-Contents
-
-## Attribution
-This package imports and uses [qr](http://code.google.com/p/rsc/qr), a QR generation package by Russ Cox.
 
 ## License
 
