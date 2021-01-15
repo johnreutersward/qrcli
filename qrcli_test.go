@@ -40,7 +40,7 @@ func TestPlay(t *testing.T) {
 	for _, tt := range playtests {
 		got := handlePlay(tt.in)
 		if got != tt.expected {
-			t.Errorf("handlePlay(%s): expected %d, actual %d", tt.in, tt.expected, got)
+			t.Errorf("handlePlay(%s): expected %s, actual %s", tt.in, tt.expected, got)
 
 		}
 	}
@@ -123,7 +123,7 @@ func TestGeo(t *testing.T) {
 		got := handleGeo(tt.in.geoLat, tt.in.geoLong, tt.in.geoElev)
 		if got != tt.expected {
 			t.Errorf(
-				"handleGeo(%s, %s, %s)\n: expected %d, actual %d",
+				"handleGeo(%s, %s, %s)\n: expected %s, actual %s",
 				tt.in.geoLat,
 				tt.in.geoLong,
 				tt.in.geoElev,
