@@ -25,7 +25,7 @@ func printUsage() {
 }
 
 func printVersion() {
-	fmt.Fprintf(os.Stdout, "qrcli %s\n", version)
+	fmt.Fprintf(os.Stdout, "qrcli v%s\n", version)
 	os.Exit(0)
 }
 
