@@ -1,15 +1,23 @@
-# <img src="http://i.imgur.com/dhnYicm.png" alt="qrcli" align="left" /> qrcli
+# qrcli
 
-[![travis-ci status](https://api.travis-ci.org/rojters/qrcli.png)](https://travis-ci.org/rojters/qrcli)
+[![Build Status](https://travis-ci.org/johnreutersward/qrcli.svg?branch=master)](https://travis-ci.org/johnreutersward/qrcli)
+[![Go Reference](https://pkg.go.dev/badge/github.com/johnreutersward/qrcli.svg)](https://pkg.go.dev/github.com/johnreutersward/qrcli)
+[![Go Report Card](https://goreportcard.com/badge/github.com/johnreutersward/qrcli)](https://goreportcard.com/report/github.com/johnreutersward/qrcli)
 
-qrcli is a cli tool for creating QR codes.
+![qrcli](qr.png?raw=true "qrcli")
+
+> qrcli is a cli tool for creating QR codes.
 
 ## Install
 
-Install from source: 
+Binary releases: 
+
+https://github.com/johnreutersward/qrcli/releases
+
+## Build
 
 ```
-$ go get github.com/rojters/qrcli
+$ go get github.com/johnreutersward/qrcli
 ```
 
 ## Usage
@@ -57,31 +65,31 @@ $ usage: qrcli [flags] [text]
 
 ## Examples
 
-Specify input and output file.
+Specify input and output file:
 
 ```
 $ qrcli -file mecard.txt -out contact.png
 ```
 
-Wifi authentication. Android devices can use this to automatically connect to a Wifi network (may require plugins). 
+Wifi authentication - Android devices can use this to automatically connect to a Wifi network (may require plugins):
 
 ```
 $ qrcli -wifi-ssid hotspot -wifi-pw secret -out wifi.png
 ```
 
-Geographic information.
+Geographic information:
 
 ```
 $ qrcli -geo-lat 12.357222 -geo-long -1.535278 -geo-elev 11 -out geo.png
 ```
 
-Email.
+Email:
 
 ```
 $ qrcli "mailto:hello@example.com" > email.png
 ```
 
-Google play URI. Opens app in Google Play on Android.
+Google play URI - Opens app in Google Play on Android:
 
 ```
 $ qrcli -googleplay com.google.android.youtube -out app.png
