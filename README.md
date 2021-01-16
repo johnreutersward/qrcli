@@ -14,7 +14,7 @@ Binary releases:
 
 https://github.com/johnreutersward/qrcli/releases
 
-## Build
+Or build from source:
 
 ```
 $ go get github.com/johnreutersward/qrcli
